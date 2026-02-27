@@ -30,4 +30,20 @@ interactions.forEach(event => {
   document.addEventListener(event, playAudio, { once: true });
 });
 
+// Navigation functionality
+const nextPageBtn = document.getElementById('nextPageBtn');
+
+nextPageBtn.addEventListener('click', () => {
+  // You can create additional HTML pages like index2.html, index3.html
+  // Or use a query parameter approach
+  
+  // Option 1: Navigate to another page
+  window.location.href = 'team2.html';
+  
+  // Option 2: Use query parameters (uncomment if you prefer this)
+  // const currentPage = new URLSearchParams(window.location.search).get('page') || '1';
+  // const nextPage = parseInt(currentPage) + 1;
+  // window.location.href = `index.html?page=${nextPage}`;
+});
+
 console.log('Star Trek Character Showcase - Scroll to explore!');

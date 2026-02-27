@@ -326,14 +326,16 @@
 
 /* Base settings (Mobile first) */
   .data {
-    position: fixed;
-    top: auto; 
-    bottom: 1.5rem; 
-    left: 1.5rem; 
+    position: fixed !important;
+    top: auto !important; 
+    bottom: 1.5rem !important; 
+    left: 1.5rem !important;
+    right: auto !important;
+    margin: 0 !important;
     transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
     opacity: calc(var(--info-scale-x));
-    transform: scale(var(--info-scale-x));
-    transform-origin: bottom left; /* Ensures it animates growing out of the corner */
+    transform: scale(var(--info-scale-x)) !important;
+    transform-origin: bottom left !important; /* Ensures it animates growing out of the corner */
     backface-visibility: hidden;
     border-radius: 10px;
     border: 1px solid var(--secondary-color);
@@ -355,8 +357,9 @@
   /* Tablet screens */
   @media (min-width: 768px) {
     .data {
-      bottom: 2rem;
-      left: 2rem;
+      bottom: 2rem !important;
+      left: 2rem !important;
+      right: auto !important;
       max-width: 280px; /* Keep it narrow so it doesn't touch the character */
     }
   }
@@ -364,6 +367,9 @@
   /* Laptop & Standard Desktop */
   @media (min-width: 1024px) {
     .data {
+      bottom: 2rem !important;
+      left: 2rem !important;
+      right: auto !important;
       padding: 1.5rem;
       max-width: 320px;
     }
@@ -372,8 +378,9 @@
   /* Large Monitors ONLY (Safely expand to 2 columns) */
   @media (min-width: 1500px) {
     .data {
-      bottom: 3rem;
-      left: 3rem;
+      bottom: 3rem !important;
+      left: 3rem !important;
+      right: auto !important;
       max-width: 450px;
       grid-template-columns: 1fr 1fr;
       grid-template-areas: 
@@ -498,3 +505,159 @@
   }
 }
 
+
+/* Navigation Button */
+.nav-button {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  z-index: 9999 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+}
+
+.next-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.2rem 2rem;
+  background: linear-gradient(135deg, #FFD230, #00B8DB);
+  border: 3px solid #00B8DB;
+  border-radius: 50px;
+  color: #000;
+  font-family: 'Big Shoulders Text', display;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+  box-shadow: 0 6px 20px rgba(255, 210, 48, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+  letter-spacing: 1px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 6px 20px rgba(255, 210, 48, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 8px 30px rgba(255, 210, 48, 0.8);
+    transform: scale(1.02);
+  }
+}
+
+.next-btn:hover {
+  transform: translateX(5px) scale(1.08);
+  box-shadow: 0 8px 35px rgba(0, 184, 219, 0.7);
+  background: linear-gradient(135deg, #00B8DB, #FFD230);
+  animation: none;
+}
+
+.next-btn:active {
+  transform: translateX(3px) scale(1.05);
+}
+
+.next-btn svg {
+  transition: transform 300ms ease-in-out;
+  width: 28px;
+  height: 28px;
+}
+
+.next-btn:hover svg {
+  transform: translateX(8px);
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+  .nav-button {
+    bottom: 5rem;
+    right: 1.5rem;
+  }
+
+  .next-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .next-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Tablet adjustments */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .nav-button {
+    bottom: 4rem;
+    right: 2rem;
+  }
+}
+
+/* Previous Button */
+.nav-button.prev {
+  right: auto;
+  left: 2rem;
+}
+
+.prev-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  border: 2px solid var(--secondary-color);
+  border-radius: 50px;
+  color: #111;
+  font-family: 'Big Shoulders Text', display;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+  box-shadow: 0 4px 15px rgba(0, 184, 219, 0.3);
+}
+
+.prev-btn:hover {
+  transform: translateX(-5px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 184, 219, 0.5);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.prev-btn:active {
+  transform: translateX(-3px) scale(1.02);
+}
+
+.prev-btn svg {
+  transition: transform 300ms ease-in-out;
+}
+
+.prev-btn:hover svg {
+  transform: translateX(-5px);
+}
+
+/* Mobile adjustments for previous button */
+@media (max-width: 767px) {
+  .nav-button.prev {
+    left: 1rem;
+    bottom: 1rem;
+  }
+
+  .prev-btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .prev-btn span {
+    display: none;
+  }
+
+  .prev-btn {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
