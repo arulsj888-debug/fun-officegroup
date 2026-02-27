@@ -1,0 +1,481 @@
+@import url(https://fonts.bunny.net/css?family=big-shoulders-text:400,700|inconsolata:400);
+
+@layer base, controls, mouse, demo;
+
+@layer demo {
+  :root {
+    --info-text-size: .75rem;
+    --primary-color: rgb(255, 210, 48);
+    --secondary-color: rgb(0 184 219);
+    --title-font-family: 'Big Shoulders Text', display;
+  }
+
+  body {
+    background-color: #111;
+    height: 700svh;
+    margin: 0;
+    font-family: 'Inconsolata', monospace;
+    padding: 2rem;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    opacity: .2;
+    background-image: radial-gradient(var(--secondary-color), #0000), 
+                      url("https://raw.githubusercontent.com/cbolson/assets/refs/heads/main/codepen/star-trek/space.webp");
+    background-size: cover;
+  }
+
+  @property --focus {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+  }
+
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .logo {
+    width: min(80vw, 600px);
+    margin: 5vh auto;
+  }
+
+  .logo img {
+    width: 100%;
+    object-fit: cover;
+    filter: drop-shadow(2px 0 0 var(--secondary-color));
+  }
+
+  .names {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: 100vw;
+    display: grid;
+    place-content: center;
+  }
+
+  .names h2 {
+    --i: sibling-index();
+    --total: sibling-count();
+  }
+
+  @supports not (selector(:sibling-index(0))) {
+    .names h2 {
+      --total: 7;
+    }
+    .names h2:nth-child(1) { --i: 1; }
+    .names h2:nth-child(2) { --i: 2; }
+    .names h2:nth-child(3) { --i: 3; }
+    .names h2:nth-child(4) { --i: 4; }
+    .names h2:nth-child(5) { --i: 5; }
+    .names h2:nth-child(6) { --i: 6; }
+    .names h2:nth-child(7) { --i: 7; }
+  }
+
+  .names h2 {
+    --item-slot: calc(100% / var(--total));
+    --item-entry: calc((var(--i) - 1) * var(--item-slot));
+    --item-exit: calc(var(--item-entry) + var(--item-slot) * 2.5 - 22%);
+    
+    grid-area: 1/1;
+    text-align: center;
+    font-family: 'Big Shoulders Text', display;
+    font-size: clamp(3rem, 15.5vw + .35rem, 16rem);
+    text-transform: uppercase;
+    font-style: italic;
+    color: var(--primary-color);
+    filter: drop-shadow(2px 0 0 var(--secondary-color));
+    animation-name: fade-in;
+    animation-duration: 1ms;
+    animation-delay: .2ms;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  @keyframes fade-in {
+    0%, 100% { opacity: 0; }
+    15%, 75% { 
+      opacity: 1;
+      translate: 0 -27vh;
+    }
+  }
+
+  .wrapper {
+    position: fixed;
+    container-type: size;
+    inset: 0;
+    margin: auto;
+    width: min(95vw, 1400px);
+    height: 80vh;
+    color: white;
+    display: grid;
+    place-content: center;
+  }
+
+  .wrapper::after {
+    content: '';
+    position: absolute;
+    top: 90cqh;
+    left: 50%;
+    translate: -50% 0;
+    background: linear-gradient(90deg, #0000, var(--secondary-color), #0000);
+    height: 1px;
+    width: 90vw;
+    z-index: -1;
+  }
+
+  .character {
+    --i: sibling-index();
+    --total: sibling-count();
+  }
+
+  @supports not (selector(:sibling-index(0))) {
+    .character {
+      --total: 7;
+    }
+    .character:nth-child(1) { --i: 1; }
+    .character:nth-child(2) { --i: 2; }
+    .character:nth-child(3) { --i: 3; }
+    .character:nth-child(4) { --i: 4; }
+    .character:nth-child(5) { --i: 5; }
+    .character:nth-child(6) { --i: 6; }
+    .character:nth-child(7) { --i: 7; }
+  }
+
+  .character {
+    --item-slot: calc(100% / var(--total));
+    --item-entry: calc((var(--i) - 1) * var(--item-slot));
+    --item-exit: calc(var(--item-entry) + var(--item-slot) * 2.5 - 22%);
+    --focus: 0;
+    --item-x: calc((var(--i) - (var(--total) + 1) / 2) * (100cqw / var(--total)) * (1 - var(--focus)));
+    
+    grid-area: 1/1;
+    place-self: center;
+    width: 100%;
+    display: grid;
+    place-self: end;
+    isolation: isolate;
+    transition: scale 300ms ease-in-out,
+                translate 300ms ease-in-out,
+                z-index 300ms ease-in-out,
+                filter 500ms ease-in-out calc((sibling-index() - 1) * 350ms);
+    scale: calc(0.4 + var(--focus) * 0.8);
+    z-index: calc(1 + var(--focus) * 100);
+    translate: var(--item-x) 0;
+    filter: sepia(calc(1 - var(--focus))) blur(0px) hue-rotate(0deg);
+    animation-name: --item-focus;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+    position: relative;
+  }
+
+  @starting-style {
+    .character {
+      filter: sepia(1) blur(80px) hue-rotate(80deg);
+    }
+  }
+
+  .character img {
+    width: 100%;
+    height: 70vh;
+    min-height: 500px;
+    max-height: 700px;
+    object-fit: contain;
+    object-position: center bottom;
+    margin: 0 auto;
+    display: block;
+    grid-area: 1/1;
+    transition: opacity 500ms ease-in-out;
+  }
+
+  .character .default-img {
+    opacity: 1;
+  }
+
+  .character .focused-img {
+    opacity: 0;
+  }
+
+  /* Image swap animation for first character (Arul) */
+  .character:first-child .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:first-child .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for second character (Hari) */
+  .character:nth-child(2) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(2) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for third character (Mugesh) */
+  .character:nth-child(3) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(3) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for fourth character (Amrish) */
+  .character:nth-child(4) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(4) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for fifth character (Velsiya) */
+  .character:nth-child(5) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(5) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for sixth character (Selva) */
+  .character:nth-child(6) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(6) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for seventh character (Darshan) */
+  .character:nth-child(7) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(7) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  @keyframes fade-out-default {
+    0% { opacity: 1; }
+    30% { opacity: 0; }
+    70% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes fade-in-focused {
+    0% { opacity: 0; }
+    30% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .data {
+    position: fixed;
+    top: 60%;
+    left: 1rem;
+    transform: translateY(-50%);
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+    opacity: calc(var(--info-scale-x));
+    transform: translateY(-50%) scale(var(--info-scale-x));
+    transform-origin: left center;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    border: 1px solid var(--secondary-color);
+    background-color: rgb(0 184 219 / .35);
+    backdrop-filter: sepia(1) brightness(20%) blur(10px);
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.8rem 1.5rem;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      'title'
+      'info'
+      'notes';
+    max-width: 340px;
+    width: auto;
+    min-width: 280px;
+    z-index: 1000;
+  }
+
+  @media (min-width: 1200px) {
+    .data {
+      max-width: 380px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 
+        'title title'
+        'info notes'
+        'info notes';
+    }
+  }
+
+  .data h3 {
+    grid-area: title;
+    font-family: 'Big Shoulders Text', display;
+    font-size: clamp(1.2rem, 2.5vw + .045rem, 1.5rem);
+    line-height: 1;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .data p,
+  .data label {
+    font-size: clamp(.65rem, 1.1vw + .045rem, .8rem);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .data div {
+    grid-area: info;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.3rem 0.5rem;
+    align-items: start;
+  }
+
+  .data label {
+    opacity: .7;
+  }
+
+  .notes {
+    grid-area: notes;
+    place-self: center;
+    text-wrap: pretty;
+  }
+
+  @keyframes --item-focus {
+    0% { 
+      --focus: 0; 
+      --info-scale-x: 0;
+    }
+    20% {
+      --info-scale-x: 0;
+    }
+    30% { 
+      --focus: 1; 
+      --info-scale-x: 1;
+    }
+    70% { 
+      --focus: 1; 
+      --info-scale-x: 1;
+    }
+    80% {
+      --info-scale-x: 0;
+    }
+    100% { 
+      --focus: 0; 
+      --info-scale-x: 0;
+    }
+  }
+}
+
+@layer mouse {
+  .mouse {
+    position: fixed;
+    bottom: 4rem;
+    left: 50%;
+    translate: -50% 0;
+    rotate: 180deg;
+    display: block;
+    width: 50px;
+    height: 50px;
+    opacity: 1;
+    color: rgb(255 255 255 / .1);
+    display: none;
+    animation-name: --mouse, --mouse-move;
+    animation-duration: 1ms, 1.5s;
+    animation-timing-function: linear, ease-in-out;
+    animation-fill-mode: forwards, both;
+    animation-iteration-count: 1, infinite;
+    animation-timeline: scroll(), auto;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .mouse {
+      display: block;
+    }
+  }
+
+  @keyframes --mouse-move {
+    50% {
+      translate: -25px 20px;
+    }
+  }
+
+  @keyframes --mouse {
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  @supports not (animation-timeline: scroll()) {
+    body::before {
+      content: "Sorry, your browser doesn't support animation-timeline";
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      translate: -50% 0;
+      font-size: 0.8rem;
+      color: red;
+    }
+  }
+}
+
