@@ -12,7 +12,7 @@
 
   body {
     background-color: #111;
-    height: 700svh;
+    height: 900svh;
     margin: 0;
     font-family: 'Inconsolata', monospace;
     padding: 2rem;
@@ -68,7 +68,7 @@
 
   @supports not (selector(:sibling-index(0))) {
     .names h2 {
-      --total: 7;
+      --total: 9;
     }
     .names h2:nth-child(1) { --i: 1; }
     .names h2:nth-child(2) { --i: 2; }
@@ -77,6 +77,8 @@
     .names h2:nth-child(5) { --i: 5; }
     .names h2:nth-child(6) { --i: 6; }
     .names h2:nth-child(7) { --i: 7; }
+    .names h2:nth-child(8) { --i: 8; }
+    .names h2:nth-child(9) { --i: 9; }
   }
 
   .names h2 {
@@ -139,7 +141,7 @@
 
   @supports not (selector(:sibling-index(0))) {
     .character {
-      --total: 7;
+      --total: 9;
     }
     .character:nth-child(1) { --i: 1; }
     .character:nth-child(2) { --i: 2; }
@@ -148,6 +150,8 @@
     .character:nth-child(5) { --i: 5; }
     .character:nth-child(6) { --i: 6; }
     .character:nth-child(7) { --i: 7; }
+    .character:nth-child(8) { --i: 8; }
+    .character:nth-child(9) { --i: 9; }
   }
 
   .character {
@@ -304,6 +308,36 @@
   }
 
   .character:nth-child(7) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for eighth character (Deepak) */
+  .character:nth-child(8) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(8) .focused-img {
+    animation-name: fade-in-focused;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  /* Image swap animation for ninth character (Rahul) */
+  .character:nth-child(9) .default-img {
+    animation-name: fade-out-default;
+    animation-timeline: scroll();
+    animation-range: var(--item-entry) var(--item-exit);
+    animation-fill-mode: both;
+  }
+
+  .character:nth-child(9) .focused-img {
     animation-name: fade-in-focused;
     animation-timeline: scroll();
     animation-range: var(--item-entry) var(--item-exit);
